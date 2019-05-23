@@ -37,11 +37,14 @@ class MenuScene extends Scene{
 		}
 
 		if (input.keyEnter.enter) {
-			soundManager.playSound("select");
 			int index = getSelectedIndex();
 			if (index == 0) {
-				sceneManager.changeScene("GameScene");
+				sceneManager.changeScene("SoloGameScene");
 			} else if (index == 1) {
+				sceneManager.changeScene("MultiplayerGameScene");
+			} else if (index == 2) {
+				sceneManager.changeScene("HowToPlayScene");
+			} else if (index == 3) {
 				sceneManager.changeScene("CreditsScene");
 			}
 		}
