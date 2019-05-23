@@ -7,6 +7,8 @@ class Globals {
   color c3 = #94e344;
   color c4 = #e2f3e4;
 
+  boolean isSoloGame = true;
+
   // game Globals
 
   // Overworld

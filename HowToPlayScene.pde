@@ -1,4 +1,4 @@
-class CreditsScene extends Scene{
+class HowToPlayScene extends Scene{
 
 	void setup() {
 	}
@@ -17,11 +17,7 @@ class CreditsScene extends Scene{
 
 		textSize(30);
 		fill(255);
-		text("Feito Por:", 100, 100);
-
-		fill(255);
-		textSize(30);
-		text("Aperte Espaço para voltar", 500, 650);
+		text("How To Play", 100, 100);
 
 	}
 

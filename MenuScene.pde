@@ -39,9 +39,11 @@ class MenuScene extends Scene{
 		if (input.keyEnter.enter) {
 			int index = getSelectedIndex();
 			if (index == 0) {
-				sceneManager.changeScene("SoloGameScene");
+				globals.isSoloGame = true;
+				sceneManager.changeScene("GameScene");
 			} else if (index == 1) {
-				sceneManager.changeScene("MultiplayerGameScene");
+				globals.isSoloGame = false;
+				sceneManager.changeScene("GameScene");
 			} else if (index == 2) {
 				sceneManager.changeScene("HowToPlayScene");
 			} else if (index == 3) {

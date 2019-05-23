@@ -10,6 +10,8 @@ class SceneManager{
 	Scene createScene(String sceneName) {
 		Scene scene = null;
 		if(sceneName == "MenuScene") scene = new MenuScene();
+		else if(sceneName == "GameScene") scene = new GameScene();
+		else if(sceneName == "HowToPlayScene") scene = new HowToPlayScene();
 		else if(sceneName == "CreditsScene") scene = new CreditsScene();
 
 		return scene;
