@@ -20,9 +20,12 @@ class Pad extends GameObject {
 
 	PadInput padInput;
 
-	int colliderW = 20;
+	int colliderW = 5;
 	int colliderH = 100;
-	int colliderOffset = 15;
+	int colliderOffset = 20;
+	RectCollider[] collided;
+	int hitTotalTimer = 4;
+	int hitTimer;
 
 	int player = 1;
 
@@ -31,7 +34,6 @@ class Pad extends GameObject {
 
 	Pad(int x, int y, int _player) {
 		super(x, y, "Pad" + _player);
-
 		player = _player;
 
 		if (player == 2) colliderOffset = -colliderOffset;
@@ -43,14 +45,26 @@ class Pad extends GameObject {
 		anim.createAnimation("idle", new int[]{0}, new int[]{99});
 		anim.setAnimation("idle");
 
+		hitTimer = hitTotalTimer;
+
 	}
 
 	void process() {
 
-    // Control
+		if (hitTimer <= 0) {
+			collided = rectCollider.process();
+			if (collided.length > 0) {
+				Ball ball = (Ball)collided[0].gameObject;
+				ball.speed.x = -ball.speed.x;
+				hitTimer = hitTotalTimer;
+			}
+		} else {
+			hitTimer--;
+		}
+
 		control();
 
-		rectCollider.process();
+    pos.y = constrain(pos.y, globals.ceilingY + colliderH/2, globals.floorY - colliderH/2);
 
 	}
 

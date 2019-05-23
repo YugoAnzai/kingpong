@@ -13,8 +13,6 @@ class GameObject {
   }
 
   void process() {
-    pos.x += speed.x;
-    pos.y += speed.y;
   }
 
   void draw() {

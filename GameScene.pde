@@ -13,7 +13,7 @@ class GameScene extends Scene{
 		bg.setAnimation("idle");
 
 		ball = new Ball(width/2, height/2);
-		ball.setSpeed(1, 1);
+		ball.setSpeed(3, 3);
 
 		pad1 = new Pad(padOffset, height/2, 1);
 		pad2 = new Pad(width - padOffset, height/2, 2);

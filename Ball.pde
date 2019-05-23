@@ -3,6 +3,8 @@ class Ball extends GameObject {
 	int colliderW = 22;
 	int colliderH = 22;
 
+  RectCollider[] collided;
+
   int lastHitPlayer = 0;
 
 	Ball(int x, int y) {
@@ -21,14 +23,17 @@ class Ball extends GameObject {
   }
 
 	void process() {
-    super.process();
+
+    collided = rectCollider.process();
+
+    pos.x += speed.x;
+    pos.y += speed.y;
 
     // Walls
     if ((pos.y - colliderH/2) < globals.ceilingY || (pos.y + colliderH/2) > globals.floorY) {
       speed.y = - speed.y;
     }
 
-		rectCollider.process();
 	}
 
 	void destroy() {
