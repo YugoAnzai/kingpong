@@ -3,16 +3,18 @@ class MenuScene extends Scene{
 	ArrayList<SelectibleText> texts = new ArrayList();
 	// Animator logo;
 
+	int optionsOffset = - 200;
+	int firstOptionY = 200;
+	int optionsSpacing = 50;
+
 	void setup() {
 
-		texts.add(new SelectibleText(470, 300, "Jogar"));
-		texts.add(new SelectibleText(470, 400, "Creditos"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY, "Jogar Solo"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + optionsSpacing, "Jogar Multiplayer"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + 2*optionsSpacing, "Como Jogar"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + 3*optionsSpacing, "Creditos"));
 
 		texts.get(0).selected = true;
-
-		// logo = new Animator(0, 0, "logo.png", 1, 1);
-		// logo.createAnimation("idle", new int[]{0}, new int[]{99});
-		// logo.setAnimation("idle");
 
 	}
 
@@ -60,14 +62,26 @@ class MenuScene extends Scene{
 
 		background(globals.c1);
 
+		fill(globals.c2);
+		textSize(80);
+		textAlign(CENTER);
+		text("King Pong", width/2 + 4, 100 + 4);
+		textAlign(LEFT);
+
+		fill(globals.c3);
+		textSize(80);
+		textAlign(CENTER);
+		text("King Pong", width/2, 100);
+		textAlign(LEFT);
+
 		for (SelectibleText text : texts){
 			text.draw();
 		}
 
 		fill(globals.c3);
-		textSize(25);
+		textSize(18);
 		textAlign(CENTER);
-		text("Use 'w' e 's' para mover e Enter para selecionar", width/2, 400);
+		text("Use 'w' e 's' para mover e Enter para selecionar", width/2, 470);
 		textAlign(LEFT);
 
 	}

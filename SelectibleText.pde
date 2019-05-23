@@ -26,7 +26,7 @@ class SelectibleText{
 	}
 
 	void draw() {
-		textSize(30);
+		textSize(26);
 		if(selected) {
 			fill(globals.c2);
 			selector.draw();
