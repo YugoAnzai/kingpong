@@ -12,16 +12,9 @@ class GameObject {
     speed = new Transform(0, 0);
   }
 
-  void hit() {
-
-  }
-
-  void setup() {
-
-  }
-
   void process() {
-
+    pos.x += speed.x;
+    pos.y += speed.y;
   }
 
   void draw() {
@@ -32,7 +25,7 @@ class GameObject {
 
   void debugDraw() {
     if (rectCollider!= null) {
-        rectCollider.debugDraw();
+      rectCollider.debugDraw();
     }
   }
 

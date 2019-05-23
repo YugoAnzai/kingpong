@@ -7,6 +7,7 @@ class Pressed {
   boolean p2down = false;
   boolean p2action = false;
   boolean enter = false;
+  boolean esc = false;
   boolean debug = false;
 
   Pressed() {
@@ -22,6 +23,7 @@ class Pressed {
     p2down = pressed.p2down;
     p2action = pressed.p2action;
     enter = pressed.enter;
+    esc = pressed.esc;
     debug = pressed.debug;
 
   }
@@ -55,6 +57,7 @@ class Input{
     keyEnter.p2down = (pressed.p2down && !pressedLastFrame.p2down);
     keyEnter.p2action = (pressed.p2action && !pressedLastFrame.p2action);
     keyEnter.enter = (pressed.enter && !pressedLastFrame.enter);
+    keyEnter.esc = (pressed.esc && !pressedLastFrame.esc);
     keyEnter.debug = (pressed.debug && !pressedLastFrame.debug);
 
     keyExit.p1up = (!pressed.p1up && pressedLastFrame.p1up);
@@ -64,6 +67,7 @@ class Input{
     keyExit.p2down = (!pressed.p2down && pressedLastFrame.p2down);
     keyExit.p2action = (!pressed.p2action && pressedLastFrame.p2action);
     keyExit.enter = (!pressed.enter && pressedLastFrame.enter);
+    keyExit.esc = (!pressed.esc && pressedLastFrame.esc);
     keyExit.debug = (!pressed.debug && pressedLastFrame.debug);
 
     pressedLastFrame.copyPressed(pressed);
@@ -78,6 +82,10 @@ class Input{
     if(keyCode == DOWN) rawInputPressed.p2down = true;
     if(keyCode == LEFT) rawInputPressed.p2action = true;
     if(key == ENTER || key == RETURN || key == ' ') rawInputPressed.enter = true;
+    if(key == ESC) {
+      rawInputPressed.esc = true;
+      key = 0;
+    }
     if(key == 'p') rawInputPressed.debug = true;
   }
 
@@ -89,6 +97,10 @@ class Input{
     if(keyCode == DOWN) rawInputPressed.p2down = false;
     if(keyCode == LEFT) rawInputPressed.p2action = false;
     if(key == ENTER || key == RETURN || key == ' ') rawInputPressed.enter = false;
+    if(key == ESC) {
+      rawInputPressed.esc = false;
+      key = 0;
+    }
     if(key == 'p') rawInputPressed.debug = false;
   }
 
@@ -101,6 +113,7 @@ class Input{
       "p2down: " + pressed.p2down,
       "p2action: " + pressed.p2action,
       "enter: " + pressed.enter,
+      "esc: " + pressed.esc,
       "debug: " + pressed.debug,
     };
     debug.draw(lines, x, y);

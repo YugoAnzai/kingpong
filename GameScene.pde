@@ -7,12 +7,18 @@ class GameScene extends Scene{
 		bg = new Animator(width/2, height/2, "field.png", 1, 1);
 		bg.createAnimation("idle", new int[]{0}, new int[]{99});
 		bg.setAnimation("idle");
+
+		ball = new Ball(width/2, height/2);
+		ball.setSpeed(1, 1);
+
 	}
 
 	void process() {
 		super.process();
 
-		if (input.keyEnter.enter) {
+		ball.process();
+
+		if (input.keyEnter.esc) {
 			sceneManager.changeScene("MenuScene");
 		}
 
@@ -22,9 +28,7 @@ class GameScene extends Scene{
 
 		bg.draw();
 
-		textSize(30);
-		fill(255);
-		text("Game", 100, 100);
+		ball.draw();
 
 	}
 
