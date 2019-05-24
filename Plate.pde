@@ -56,6 +56,13 @@ class Plate extends GameObject {
 	}
 
 	void hitBall(Ball ball) {
+
+		if (player == 1) {
+			soundManager.playSound("bounce1");
+		} else if (player == 2) {
+			soundManager.playSound("bounce2");
+		}
+
 		float speedMagnitude = sqrt(sq(ball.speed.x ) + sq(ball.speed.y));
 		speedMagnitude *= hitSpeedMultiplier;
 		float angle = hitMaxAngle * ((ball.pos.y - pos.y)/(colliderH/2));

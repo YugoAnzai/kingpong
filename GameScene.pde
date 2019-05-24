@@ -58,15 +58,20 @@ class GameScene extends Scene{
 			if (player2Score == winScore) {
 				globals.wonLastGame = 2;
 				sceneManager.changeScene("EndGameScene");
+			} else {
+				scored();
+				soundManager.playSound("goal2");
 			}
-			scored();
 		} else if (ball.pos.x > width + scoreXOffset) {
 			player1Score++;
+			soundManager.playSound("goal1");
 			if (player1Score == winScore) {
 				globals.wonLastGame = 1;
 				sceneManager.changeScene("EndGameScene");
+			} else {
+				scored();
+				soundManager.playSound("goal1");
 			}
-			scored();
 		}
 
 		// Restart ball

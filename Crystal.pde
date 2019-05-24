@@ -16,9 +16,11 @@ class Crystal extends GameObject {
 	void collect(int player) {
 
 		if (player == 1) {
+			soundManager.playSound("crystal");
 			globals.pad1.getCrystal();
 			destroy();
-		} else {
+		} else if (player == 2){
+			soundManager.playSound("crystal");
 			globals.pad2.getCrystal();
 			destroy();
 		}

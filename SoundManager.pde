@@ -18,9 +18,11 @@ class SoundManager{
 		soundNames.add("bounce1");
 		soundNames.add("bounce2");
 		soundNames.add("bounce3");
+		soundNames.add("plate");
 		soundNames.add("crystal");
 		soundNames.add("goal1");
 		soundNames.add("goal2");
+		soundNames.add("end");
 
 		loadAudioPlayers("sfx", soundNames, soundSounds);
 

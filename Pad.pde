@@ -128,6 +128,13 @@ class Pad extends GameObject {
 	}
 
 	void hitBall(Ball ball) {
+
+		if (player == 1) {
+			soundManager.playSound("bounce1");
+		} else if (player == 2) {
+			soundManager.playSound("bounce2");
+		}
+
 		float speedMagnitude = sqrt(sq(ball.speed.x ) + sq(ball.speed.y));
 		float angle = hitMaxAngle * ((ball.pos.y - pos.y)/(colliderH/2));
 		if (ball.speed.x > 0) {
@@ -159,6 +166,9 @@ class Pad extends GameObject {
 	}
 
 	void launchPlate() {
+
+		soundManager.playSound("plate");
+
 		plate.start((int)pos.x, (int)pos.y);
 		crystals = 0;
 		crystalIconTint = false;
