@@ -9,12 +9,12 @@ class Plate extends GameObject {
 	float hitSpeedMultiplier = 1.2;
 
 	boolean isAlive = false;
-	int lifeTotalTimer = 70;
+	int lifeTotalTimer = 60;
 	int lifeTimer = 0;
 
 	int player = 1;
 
-	int moveSpeed = 6;
+	int moveSpeed = 8;
 
 	Plate(int x, int y, int _player) {
 		super(x, y, "Plate");

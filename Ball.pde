@@ -36,11 +36,11 @@ class Ball extends GameObject {
     pos.y += speed.y;
 
     // Walls
-		int speed = abs(speed.y);
-    if (pos.y - colliderH/2) < globals.ceilingY) {
-			speed.y = speed;
-		} else (pos.y + colliderH/2) > globals.floorY) {
-      speed.y = - speed;
+		float absSpeed = abs(speed.y);
+    if ((pos.y - colliderH/2) < globals.ceilingY) {
+			speed.y = absSpeed;
+		} else if((pos.y + colliderH/2) > globals.floorY) {
+      speed.y = - absSpeed;
     }
 
 		collided = rectCollider.process();
