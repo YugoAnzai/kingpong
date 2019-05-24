@@ -6,7 +6,7 @@ class Plate extends GameObject {
 	RectCollider[] collided;
 
 	float hitMaxAngle = 40;
-	float hitSpeedMultiplier = 1.2;
+	float hitSpeedMultiplier = 1.1;
 
 	boolean isAlive = false;
 	int lifeTotalTimer = 60;
@@ -37,7 +37,7 @@ class Plate extends GameObject {
 	void process() {
 
 		collided = rectCollider.process();
-		
+
 		if (!isAlive) return;
 
 		pos.x += moveSpeed;

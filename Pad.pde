@@ -36,9 +36,12 @@ class Pad extends GameObject {
 	int crystalsToPlate = 5;
 	int crystalsRectW = 4;
 	int crystalsRectH = 80;
-	int crystalsBarColorTotalTimer = 4;
-	int crystalsBarColorTimer;
-	color crystalsBarColor;
+	int crystalIconColorTotalTimer = 5;
+	int crystalIconColorTimer;
+	boolean crystalIconTint = false;
+	Animator crystalIcon;
+	int[] crystalXOffsets = {-30, -30, -30, -30, -30};
+	int[] crystalYOffsets = {-50, -25, 0, 25, 50};
 
 	Plate plate;
 
@@ -46,7 +49,13 @@ class Pad extends GameObject {
 		super(x, y, "Pad" + _player);
 		player = _player;
 
-		if (player == 2) colliderOffset = -colliderOffset;
+		if (player == 2) {
+			colliderOffset = -colliderOffset;
+			for (int i = 0; i < crystalXOffsets.length; i++) {
+				crystalXOffsets[i] = -crystalXOffsets[i];
+			}
+		}
+
 		rectCollider = new RectCollider(this, colliderManager.pads, colliderW, colliderH, colliderOffset, 0);
 
 		padInput = new PadInput();
@@ -55,10 +64,13 @@ class Pad extends GameObject {
 		anim.createAnimation("idle", new int[]{0}, new int[]{99});
 		anim.setAnimation("idle");
 
+		crystalIcon = new Animator(0, 0, "crystalIcon.png", 1, 1);
+		crystalIcon.createAnimation("idle", new int[]{0}, new int[]{99});
+		crystalIcon.setAnimation("idle");
+
 		hitTimer = hitTotalTimer;
 
-		crystalsBarColor = globals.c2;
-		crystalsBarColorTimer = crystalsBarColorTotalTimer;
+		crystalIconColorTimer = crystalIconColorTotalTimer;
 
 		plate = new Plate(0, 0, player);
 
@@ -84,15 +96,11 @@ class Pad extends GameObject {
 
 		// crystals bar color
 		if (crystals == crystalsToPlate) {
-			if (crystalsBarColorTimer < 0) {
-				if (crystalsBarColor == globals.c2) {
-					crystalsBarColor = globals.c3;
-				} else {
-					crystalsBarColor = globals.c2;
-				}
-				crystalsBarColorTimer = crystalsBarColorTotalTimer;
+			if (crystalIconColorTimer < 0) {
+				crystalIconTint = !crystalIconTint;
+				crystalIconColorTimer = crystalIconColorTotalTimer;
 			} else {
-				crystalsBarColorTimer--;
+				crystalIconColorTimer--;
 			}
 		}
 
@@ -101,8 +109,13 @@ class Pad extends GameObject {
 	void draw() {
 		super.draw();
 
-		fill(crystalsBarColor);
-		rect(pos.x + colliderOffset, pos.y, crystalsRectW, (int) crystalsRectH * ((float)crystals/crystalsToPlate));
+		if (crystalIconTint) tint(0);
+		for(int i = 0; i < crystals; i ++) {
+			crystalIcon.x = pos.x + crystalXOffsets[i];
+			crystalIcon.y = pos.y + crystalYOffsets[i];
+			crystalIcon.draw();
+		}
+		noTint();
 
 		plate.draw();
 
@@ -148,7 +161,7 @@ class Pad extends GameObject {
 	void launchPlate() {
 		plate.start((int)pos.x, (int)pos.y);
 		crystals = 0;
-		crystalsBarColor = globals.c2;
+		crystalIconTint = false;
 	}
 
 	void updatePadInput() {
