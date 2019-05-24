@@ -17,9 +17,15 @@ class Ball extends GameObject {
 
 	}
 
-  void setSpeed(float x, float y) {
-    speed.x = x;
-    speed.y = y;
+  void setSpeed(float magnitude) {
+    int rand = (int)random(0,2);
+    if (rand == 1) {
+      speed.x = magnitude;
+			speed.y = 0;
+    } else {
+      speed.x = -magnitude;
+			speed.y = 0;
+    }
   }
 
 	void process() {

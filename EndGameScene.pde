@@ -1,20 +1,26 @@
-class MenuScene extends Scene{
+class EndGameScene extends Scene{
 
 	ArrayList<SelectibleText> texts = new ArrayList();
 	// Animator logo;
 
 	int optionsOffset = - 200;
-	int firstOptionY = 200;
+	int firstOptionY = 400;
 	int optionsSpacing = 50;
+
+	Animator pad;
 
 	void setup() {
 
-		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY, "Jogar Solo"));
-		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + optionsSpacing, "Jogar Multiplayer"));
-		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + 2*optionsSpacing, "Como Jogar"));
-		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + 3*optionsSpacing, "Creditos"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY, "Jogar Novamente"));
+		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + optionsSpacing, "Voltar ao Menu"));
 
 		texts.get(0).selected = true;
+
+		pad = new Animator(0, 0, "pad" + globals.wonLastGame + ".png", 1, 1);
+		pad.createAnimation("idle", new int[]{0}, new int[]{99});
+		pad.setAnimation("idle");
+		pad.x = width/2;
+		pad.y = height/2;
 
 	}
 
@@ -39,18 +45,11 @@ class MenuScene extends Scene{
 		if (input.keyEnter.enter) {
 			int index = getSelectedIndex();
 			if (index == 0) {
-				globals.isSoloGame = true;
 				sceneManager.changeScene("GameScene");
 			} else if (index == 1) {
-				globals.isSoloGame = false;
-				sceneManager.changeScene("GameScene");
-			} else if (index == 2) {
-				sceneManager.changeScene("HowToPlayScene");
-			} else if (index == 3) {
-				sceneManager.changeScene("CreditsScene");
+				sceneManager.changeScene("MenuScene");
 			}
 		}
-
 
 	}
 
@@ -67,23 +66,19 @@ class MenuScene extends Scene{
 
 		background(globals.c1);
 
-		textSize(80);
+		textSize(60);
 		textAlign(CENTER);
 		fill(globals.c2);
-		text("King Pong", width/2 + 4, 100 + 4);
+		text("Jogador " + globals.wonLastGame + " venceu!", width/2 + 4, 100 + 4);
 		fill(globals.c3);
-		text("King Pong", width/2, 100);
+		text("Jogador " + globals.wonLastGame + " venceu!", width/2, 100);
 		textAlign(LEFT);
+
+		pad.draw();
 
 		for (SelectibleText text : texts){
 			text.draw();
 		}
-
-		fill(globals.c3);
-		textSize(18);
-		textAlign(CENTER);
-		text("Use 'w' e 's' para mover e Enter para selecionar", width/2, 470);
-		textAlign(LEFT);
 
 	}
 

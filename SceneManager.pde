@@ -13,6 +13,7 @@ class SceneManager{
 		else if(sceneName == "GameScene") scene = new GameScene();
 		else if(sceneName == "HowToPlayScene") scene = new HowToPlayScene();
 		else if(sceneName == "CreditsScene") scene = new CreditsScene();
+		else if(sceneName == "EndGameScene") scene = new EndGameScene();
 
 		return scene;
 	}

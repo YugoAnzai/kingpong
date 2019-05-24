@@ -12,5 +12,7 @@ class Globals {
   int ceilingY = 25;
   int floorY = 475;
 
+  int wonLastGame = 1;
+
 
 }

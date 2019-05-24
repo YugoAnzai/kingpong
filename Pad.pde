@@ -24,8 +24,9 @@ class Pad extends GameObject {
 	int colliderH = 100;
 	int colliderOffset = 20;
 	RectCollider[] collided;
-	int hitTotalTimer = 4;
+	int hitTotalTimer = 20;
 	int hitTimer;
+	float hitMaxAngle = 40;
 
 	int player = 1;
 
@@ -54,8 +55,7 @@ class Pad extends GameObject {
 		if (hitTimer <= 0) {
 			collided = rectCollider.process();
 			if (collided.length > 0) {
-				Ball ball = (Ball)collided[0].gameObject;
-				ball.speed.x = -ball.speed.x;
+				hitBall((Ball)collided[0].gameObject);
 				hitTimer = hitTotalTimer;
 			}
 		} else {
@@ -65,6 +65,20 @@ class Pad extends GameObject {
 		control();
 
     pos.y = constrain(pos.y, globals.ceilingY + colliderH/2, globals.floorY - colliderH/2);
+
+	}
+
+	void hitBall(Ball ball) {
+		float speedMagnitude = sqrt(sq(ball.speed.x ) + sq(ball.speed.y));
+		float angle = hitMaxAngle * ((ball.pos.y - pos.y)/(colliderH/2));
+		if (ball.speed.x > 0) {
+			ball.speed.x = - cos(radians(angle)) * speedMagnitude;
+		} else {
+			ball.speed.x = cos(radians(angle)) * speedMagnitude;
+		}
+		ball.speed.y = sin(radians(angle)) * speedMagnitude;
+
+		ball.lastHitPlayer = player;
 
 	}
 
