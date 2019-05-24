@@ -7,6 +7,7 @@ class CreditsScene extends Scene{
 		super.process();
 
 		if (input.keyEnter.enter) {
+			soundManager.playSound("bounce2");
 			sceneManager.changeScene("MenuScene");
 		}
 

@@ -9,6 +9,11 @@ class MenuScene extends Scene{
 
 	void setup() {
 
+		if (!soundManager.isLoopPlaying("menu")) {
+			soundManager.playLoop("menu");
+		}
+		soundManager.pauseLoop("game");
+
 		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY, "Jogar Solo"));
 		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + optionsSpacing, "Jogar Multiplayer"));
 		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + 2*optionsSpacing, "Como Jogar"));
@@ -22,6 +27,8 @@ class MenuScene extends Scene{
 		super.process();
 
 		if (input.keyEnter.p1up || input.keyEnter.p1down) {
+
+			soundManager.playSound("bounce3");
 
 			int index = getSelectedIndex();
 			texts.get(index).selected = false;
@@ -37,6 +44,9 @@ class MenuScene extends Scene{
 		}
 
 		if (input.keyEnter.enter) {
+
+			soundManager.playSound("bounce1");
+
 			int index = getSelectedIndex();
 			if (index == 0) {
 				globals.isSoloGame = true;

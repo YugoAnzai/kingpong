@@ -11,6 +11,9 @@ class EndGameScene extends Scene{
 
 	void setup() {
 
+		soundManager.pauseLoop("game");
+		soundManager.playSound("end");
+
 		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY, "Jogar Novamente"));
 		texts.add(new SelectibleText(width/2 + optionsOffset, firstOptionY + optionsSpacing, "Voltar ao Menu"));
 
@@ -29,6 +32,8 @@ class EndGameScene extends Scene{
 
 		if (input.keyEnter.p1up || input.keyEnter.p1down) {
 
+			soundManager.playSound("bounce3");
+
 			int index = getSelectedIndex();
 			texts.get(index).selected = false;
 
@@ -43,6 +48,9 @@ class EndGameScene extends Scene{
 		}
 
 		if (input.keyEnter.enter) {
+
+			soundManager.playSound("bounce1");
+
 			int index = getSelectedIndex();
 			if (index == 0) {
 				sceneManager.changeScene("GameScene");

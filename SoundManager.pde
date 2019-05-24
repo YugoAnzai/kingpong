@@ -15,38 +15,19 @@ class SoundManager{
 	SoundManager(PApplet p) {
 		minim = new Minim(p);
 
-		// soundNames.add("crow_grab");
-		// soundNames.add("crow_hit");
-		// soundNames.add("crow_wing");
-		// soundNames.add("hunter_hit");
-		// soundNames.add("hunter_shot");
-		// soundNames.add("hunter_walk_1");
-		// soundNames.add("hunter_walk_2");
-		// soundNames.add("hunter_walk_3");
-		// soundNames.add("hunter_walk_4");
-		// soundNames.add("level_intro");
-		// soundNames.add("loose");
-		// soundNames.add("lumberjack_axe_hit");
-		// soundNames.add("pine_falling");
-		// soundNames.add("pine_hit");
-		// soundNames.add("return");
-		// soundNames.add("select");
-		// soundNames.add("tick");
-		// soundNames.add("tree_growing");
-		// soundNames.add("ui_points");
-		// soundNames.add("victory");
-		//
-		// loadAudioPlayers("sfx", soundNames, soundSounds);
-		//
-		// loopNames.add("boss");
-		// loopNames.add("cutscene");
-		// loopNames.add("forest");
-		// loopNames.add("level1");
-		// loopNames.add("level2");
-		// loopNames.add("level3");
-		// loopNames.add("menu");
-		//
-		// loadAudioPlayers("music", loopNames, loopSounds);
+		soundNames.add("bounce1");
+		soundNames.add("bounce2");
+		soundNames.add("bounce3");
+		soundNames.add("crystal");
+		soundNames.add("goal1");
+		soundNames.add("goal2");
+
+		loadAudioPlayers("sfx", soundNames, soundSounds);
+
+		loopNames.add("game");
+		loopNames.add("menu");
+
+		loadAudioPlayers("music", loopNames, loopSounds);
 
 	}
 
@@ -69,6 +50,11 @@ class SoundManager{
 	void pauseLoop(String loopName) {
 		int index = nameIndex(loopName, loopNames);
 		loopSounds.get(index).pause();
+	}
+
+	boolean isLoopPlaying(String loopName) {
+		int index = nameIndex(loopName, loopNames);
+		return loopSounds.get(index).isPlaying();
 	}
 
 	int nameIndex(String name, ArrayList<String> names) {

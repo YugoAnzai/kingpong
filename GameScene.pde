@@ -22,6 +22,10 @@ class GameScene extends Scene{
 	CrystalsManager crystalsManager;
 
 	void setup() {
+
+		soundManager.pauseLoop("menu");
+		soundManager.playLoop("game");
+
 		field = new Animator(width/2, height/2, "field.png", 1, 1);
 		field.createAnimation("idle", new int[]{0}, new int[]{99});
 		field.setAnimation("idle");
