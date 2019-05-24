@@ -7,10 +7,15 @@ class Globals {
   color c3 = #94e344;
   color c4 = #e2f3e4;
 
-  // game Globals
+  // game setup Globals
   boolean isSoloGame = true;
   int ceilingY = 25;
   int floorY = 475;
+
+  // game globals
+  Pad pad1;
+  Pad pad2;
+  CrystalsManager crystalsManager;
 
   int wonLastGame = 1;
 

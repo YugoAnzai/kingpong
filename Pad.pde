@@ -32,6 +32,13 @@ class Pad extends GameObject {
 
 	int moveSpeed = 10;
 
+	int crystals = 0;
+	int crystalsToPlate = 10;
+	int crystalsRectW = 4;
+	int crystalsRectH = 80;
+	int crystalsBarColorTotalTimer = 4;
+	int crystalsBarColorTimer;
+	color crystalsBarColor;
 
 	Pad(int x, int y, int _player) {
 		super(x, y, "Pad" + _player);
@@ -47,6 +54,9 @@ class Pad extends GameObject {
 		anim.setAnimation("idle");
 
 		hitTimer = hitTotalTimer;
+
+		crystalsBarColor = globals.c2;
+		crystalsBarColorTimer = crystalsBarColorTotalTimer;
 
 	}
 
@@ -66,6 +76,34 @@ class Pad extends GameObject {
 
     pos.y = constrain(pos.y, globals.ceilingY + colliderH/2, globals.floorY - colliderH/2);
 
+		// crystals bar color
+		if (crystals == crystalsToPlate) {
+			if (crystalsBarColorTimer < 0) {
+				if (crystalsBarColor == globals.c2) {
+					crystalsBarColor = globals.c3;
+				} else {
+					crystalsBarColor = globals.c2;
+				}
+				crystalsBarColorTimer = crystalsBarColorTotalTimer;
+			} else {
+				crystalsBarColorTimer--;
+			}
+		}
+
+	}
+
+	void draw() {
+		super.draw();
+
+		fill(crystalsBarColor);
+		rect(pos.x + colliderOffset, pos.y, crystalsRectW, (int) crystalsRectH * ((float)crystals/crystalsToPlate));
+
+	}
+
+	void getCrystal() {
+		if (crystals < crystalsToPlate) {
+			crystals++;
+		}
 	}
 
 	void hitBall(Ball ball) {

@@ -17,6 +17,7 @@ void setup() {
   size(800, 500);
   rectMode(CENTER);
   imageMode(CENTER);
+  noStroke();
 
   textFont(createFont("Retro Gaming.ttf", 48));
 

@@ -40,6 +40,14 @@ class Ball extends GameObject {
       speed.y = - speed.y;
     }
 
+		collided = rectCollider.process();
+		if (collided.length > 0) {
+			Crystal crystal = (Crystal)collided[0].gameObject;
+			if (crystal != null) {
+				crystal.collect(lastHitPlayer);
+			}
+		}
+
 	}
 
 	void destroy() {

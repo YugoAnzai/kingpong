@@ -19,6 +19,8 @@ class GameScene extends Scene{
 	int scoreTextYOffset = 100;
 	int winScore = 3;
 
+	CrystalsManager crystalsManager;
+
 	void setup() {
 		bg = new Animator(width/2, height/2, "field.png", 1, 1);
 		bg.createAnimation("idle", new int[]{0}, new int[]{99});
@@ -27,7 +29,11 @@ class GameScene extends Scene{
 		ball = new Ball(width/2, height/2);
 
 		pad1 = new Pad(padOffset, height/2, 1);
+		globals.pad1 = pad1;
 		pad2 = new Pad(width - padOffset, height/2, 2);
+		globals.pad2 = pad2;
+
+		crystalsManager = new CrystalsManager();
 
 		scoredTimer = scoredTotalTimer;
 
@@ -39,6 +45,8 @@ class GameScene extends Scene{
 		ball.process();
 		pad1.process();
 		pad2.process();
+
+		crystalsManager.process();
 
 		// Goal process
 		if (ball.pos.x < 0 - scoreXOffset) {
@@ -94,6 +102,8 @@ class GameScene extends Scene{
 		pad1.draw();
 		pad2.draw();
 
+		crystalsManager.draw();
+
 		if (scored) {
 
 			if (player1Score == 0 && player2Score == 0) {
@@ -125,6 +135,8 @@ class GameScene extends Scene{
 		ball.debugDraw();
 		pad1.debugDraw();
 		pad2.debugDraw();
+
+		crystalsManager.debugDraw();
 
 		debugDrawGrid();
 	}
