@@ -30,7 +30,7 @@ class Pad extends GameObject {
 
 	int player = 1;
 
-	int moveSpeed = 10;
+	int moveSpeed = 6;
 
 	int crystals = 0;
 	int crystalsToPlate = 5;

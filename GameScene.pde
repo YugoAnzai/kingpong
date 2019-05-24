@@ -1,11 +1,11 @@
 class GameScene extends Scene{
 
-	Animator bg;
+	Animator field;
 
 	Ball ball;
 	Pad pad1;
 	Pad pad2;
-	int padOffset = 25;
+	int padOffset = 40;
 
 	float ballSpeed = 5;
 
@@ -22,9 +22,9 @@ class GameScene extends Scene{
 	CrystalsManager crystalsManager;
 
 	void setup() {
-		bg = new Animator(width/2, height/2, "field.png", 1, 1);
-		bg.createAnimation("idle", new int[]{0}, new int[]{99});
-		bg.setAnimation("idle");
+		field = new Animator(width/2, height/2, "field.png", 1, 1);
+		field.createAnimation("idle", new int[]{0}, new int[]{99});
+		field.setAnimation("idle");
 
 		ball = new Ball(width/2, height/2);
 
@@ -55,14 +55,14 @@ class GameScene extends Scene{
 				globals.wonLastGame = 2;
 				sceneManager.changeScene("EndGameScene");
 			}
-			scored = true;
+			scored();
 		} else if (ball.pos.x > width + scoreXOffset) {
 			player1Score++;
 			if (player1Score == winScore) {
 				globals.wonLastGame = 1;
 				sceneManager.changeScene("EndGameScene");
 			}
-			scored = true;
+			scored();
 		}
 
 		// Restart ball
@@ -85,9 +85,17 @@ class GameScene extends Scene{
 
 	}
 
+	void scored() {
+		scored = true;
+		ball.lastHitPlayer = 0;
+		crystalsManager.clearCrystals();
+	}
+
 	void draw(){
 
-		bg.draw();
+		background(globals.c1);
+
+		field.draw();
 
 		// Scores
 		fill(globals.c2);

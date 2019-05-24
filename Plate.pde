@@ -36,11 +36,12 @@ class Plate extends GameObject {
 
 	void process() {
 
+		collided = rectCollider.process();
+		
 		if (!isAlive) return;
 
 		pos.x += moveSpeed;
 
-		collided = rectCollider.process();
 		if (collided.length > 0) {
 			hitBall((Ball)collided[0].gameObject);
 			die();

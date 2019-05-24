@@ -3,7 +3,7 @@ class EndGameScene extends Scene{
 	ArrayList<SelectibleText> texts = new ArrayList();
 	// Animator logo;
 
-	int optionsOffset = - 200;
+	int optionsOffset = 0;
 	int firstOptionY = 400;
 	int optionsSpacing = 50;
 

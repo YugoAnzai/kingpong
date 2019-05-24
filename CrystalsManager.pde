@@ -40,6 +40,12 @@ class CrystalsManager{
 		}
   }
 
+  void clearCrystals() {
+    for (Crystal crystal : crystals){
+			crystal.destroy();
+		}
+  }
+
   void debugDraw() {
     for (Crystal crystal : crystals){
 			crystal.debugDraw();
