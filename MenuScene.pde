@@ -3,7 +3,7 @@ class MenuScene extends Scene{
 	ArrayList<SelectibleText> texts = new ArrayList();
 	// Animator logo;
 
-	int optionsOffset = - 200;
+	int optionsOffset = 0;
 	int firstOptionY = 200;
 	int optionsSpacing = 50;
 
@@ -68,12 +68,10 @@ class MenuScene extends Scene{
 		background(globals.c1);
 
 		textSize(80);
-		textAlign(CENTER);
 		fill(globals.c2);
 		text("King Pong", width/2 + 4, 100 + 4);
 		fill(globals.c3);
 		text("King Pong", width/2, 100);
-		textAlign(LEFT);
 
 		for (SelectibleText text : texts){
 			text.draw();
@@ -81,9 +79,7 @@ class MenuScene extends Scene{
 
 		fill(globals.c3);
 		textSize(18);
-		textAlign(CENTER);
 		text("Use 'w' e 's' para mover e Enter para selecionar", width/2, 470);
-		textAlign(LEFT);
 
 	}
 

@@ -13,15 +13,22 @@ class CreditsScene extends Scene{
 	}
 
 	void draw(){
-		background(0);
 
-		textSize(30);
-		fill(255);
-		text("Feito Por:", 100, 100);
+		background(globals.c1);
 
-		fill(255);
-		textSize(30);
-		text("Aperte Espaço para voltar", 500, 650);
+		fill(globals.c3);
+		textSize(22);
+		text("Feito por:", width/2, 100);
+
+		textSize(80);
+		fill(globals.c2);
+		text("Yugo Anzai", width/2 + 4, 270 + 4);
+		fill(globals.c3);
+		text("Yugo Anzai", width/2, 270);
+
+		fill(globals.c3);
+		textSize(18);
+		text("Enter para voltar", width/2, 470);
 
 	}
 

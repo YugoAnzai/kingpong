@@ -90,12 +90,10 @@ class GameScene extends Scene{
 		bg.draw();
 
 		// Scores
-		textAlign(CENTER);
 		fill(globals.c2);
 		textSize(60);
 		text(player1Score, scoreTextXOffset, scoreTextYOffset);
 		text(player2Score, width - scoreTextXOffset, scoreTextYOffset);
-		textAlign(LEFT);
 
 		ball.draw();
 
@@ -109,22 +107,18 @@ class GameScene extends Scene{
 			if (player1Score == 0 && player2Score == 0) {
 
 				textSize(50);
-				textAlign(CENTER);
 				fill(globals.c2);
 				text("Faça 3 pontos.", width/2 + 4, 200 + 4);
 				fill(globals.c3);
 				text("Faça 3 pontos.", width/2, 200);
-				textAlign(LEFT);
 
 			}
 
 			textSize(40);
-			textAlign(CENTER);
 			fill(globals.c2);
 			text("Prepare-se!", width/2 + 4, 300 + 4);
 			fill(globals.c3);
 			text("Prepare-se!", width/2, 300);
-			textAlign(LEFT);
 
 		}
 

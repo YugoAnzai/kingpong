@@ -67,12 +67,10 @@ class EndGameScene extends Scene{
 		background(globals.c1);
 
 		textSize(60);
-		textAlign(CENTER);
 		fill(globals.c2);
 		text("Jogador " + globals.wonLastGame + " venceu!", width/2 + 4, 100 + 4);
 		fill(globals.c3);
 		text("Jogador " + globals.wonLastGame + " venceu!", width/2, 100);
-		textAlign(LEFT);
 
 		pad.draw();
 

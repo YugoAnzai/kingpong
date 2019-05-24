@@ -5,8 +5,8 @@ class SelectibleText{
 	int x;
 	int y;
 
-	int selectionXOffset = -20;
-	int selectionYOffset = -5;
+	int selectionXOffset = 180;
+	int selectionYOffset = -8;
 
 	Animator selector;
 
@@ -20,8 +20,7 @@ class SelectibleText{
 		selector.createAnimation("idle", new int[]{0}, new int[]{99});
 		selector.setAnimation("idle");
 
-		selector.x = x + selectionXOffset;
-		selector.y = y + selectionXOffset;
+		selector.y = y + selectionYOffset;
 
 	}
 
@@ -29,6 +28,9 @@ class SelectibleText{
 		textSize(26);
 		if(selected) {
 			fill(globals.c2);
+			selector.x = x - selectionXOffset;
+			selector.draw();
+			selector.x = x + selectionXOffset;
 			selector.draw();
 		} else {
 			fill(globals.c3);
