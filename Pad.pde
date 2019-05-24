@@ -33,12 +33,14 @@ class Pad extends GameObject {
 	int moveSpeed = 10;
 
 	int crystals = 0;
-	int crystalsToPlate = 10;
+	int crystalsToPlate = 5;
 	int crystalsRectW = 4;
 	int crystalsRectH = 80;
 	int crystalsBarColorTotalTimer = 4;
 	int crystalsBarColorTimer;
 	color crystalsBarColor;
+
+	Plate plate;
 
 	Pad(int x, int y, int _player) {
 		super(x, y, "Pad" + _player);
@@ -58,9 +60,13 @@ class Pad extends GameObject {
 		crystalsBarColor = globals.c2;
 		crystalsBarColorTimer = crystalsBarColorTotalTimer;
 
+		plate = new Plate(0, 0, player);
+
 	}
 
 	void process() {
+
+		plate.process();
 
 		if (hitTimer <= 0) {
 			collided = rectCollider.process();
@@ -98,6 +104,8 @@ class Pad extends GameObject {
 		fill(crystalsBarColor);
 		rect(pos.x + colliderOffset, pos.y, crystalsRectW, (int) crystalsRectH * ((float)crystals/crystalsToPlate));
 
+		plate.draw();
+
 	}
 
 	void getCrystal() {
@@ -131,6 +139,16 @@ class Pad extends GameObject {
       pos.y += moveSpeed;
     }
 
+		if (crystals == crystalsToPlate && padInput.keyEnterAction) {
+			launchPlate();
+		}
+
+	}
+
+	void launchPlate() {
+		plate.start((int)pos.x, (int)pos.y);
+		crystals = 0;
+		crystalsBarColor = globals.c2;
 	}
 
 	void updatePadInput() {
@@ -149,6 +167,11 @@ class Pad extends GameObject {
 			padInput.keyEnterDown = input.keyEnter.p2down;
 			padInput.keyEnterAction = input.keyEnter.p2action;
 		}
+	}
+
+	void debugDraw() {
+		super.debugDraw();
+		plate.debugDraw();
 	}
 
 	void destroy() {
