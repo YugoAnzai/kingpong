@@ -7,7 +7,7 @@ class GameScene extends Scene{
 	Pad pad2;
 	int padOffset = 40;
 
-	float ballSpeed = 5;
+	float ballSpeed = 7;
 
 	int player1Score = 0;
 	int player2Score = 0;

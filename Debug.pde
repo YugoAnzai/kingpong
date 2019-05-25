@@ -2,8 +2,8 @@ class Debug {
 
   void draw(String[] lines, int x, int y){
 
-    color boardColor = color(0, 0, 0);
-    color textColor = color(80, 20, 200);
+    color boardColor = color(0);
+    color textColor = color(255);
 
     draw(lines, x, y, boardColor, textColor);
 

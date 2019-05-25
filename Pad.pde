@@ -46,13 +46,22 @@ class Pad extends GameObject {
 	Plate plate;
 
 	// IA variables
-	// 1: findingCrystal 2: targettingCrystal; 3: using_plate
+
 	int aiState = 1;
+	// 1: findingCrystal
+	// 2: targettingCrystal
+	// 3: positioningForPlate
+	// 4: moveAndWaitingToShoot
+
 	Crystal aiCrystalTarget;
 	int aiMovePrecision = 2;
 	int aiBallPredY = 0;
+	int yPredictionSecurityWindow = 4;
 	float aiCrystalAngle = 0;
 	int aiAimY = 0;
+	int[] aiShootXPreds = {300, 450, 500};
+	int aiShootYPosWindow = 3;
+	int aiTimeToShoot = 0;
 
 	Pad(int x, int y, int _player) {
 		super(x, y, "Pad" + _player);
@@ -201,7 +210,8 @@ class Pad extends GameObject {
 
 			// Has enough crystals to use special, change state
 			if (crystals == crystalsToPlate) {
-
+				aiState = 3;
+				return;
 			}
 
 			// Lost crystal
@@ -211,8 +221,8 @@ class Pad extends GameObject {
 			}
 
 			if (globals.ball.speed.x > 0) {
-
 				// ball coming, predictY
+
 				aiBallPredY = aiBallYPredict(pos.x);
 
 				// Angle for crystal
@@ -231,11 +241,63 @@ class Pad extends GameObject {
 
 			// Find best position and timing to shoot
 
-			// ball going, just stay in height
-			aiAimY = (int)globals.ball.pos.y;
+			if (globals.ball.speed.x > 0) {
+				// ball coming
+
+				// for each x value
+				for(int i = 0; i < aiShootXPreds.length; i ++) {
+					// if ball is already in front
+					if (globals.ball.pos.x > aiShootXPreds[i]) continue;
+
+					// Calculate time for ball to reach
+					int ballTimeToReachX = (int)((aiShootXPreds[i] - globals.ball.pos.x) / globals.ball.speed.x);
+
+					// Calculate when need to shoot
+					int plateTimeToReachX = (int)abs(((pos.x - aiShootXPreds[i]) / plate.moveSpeed));
+
+					// if still has time to shoot
+					if (plateTimeToReachX < ballTimeToReachX) {
+						println("ballTime > plateTime");
+						println("ballTime: " + ballTimeToReachX + " platetime: " + plateTimeToReachX);
+
+						int hittingY = aiBallYPredict(aiShootXPreds[i]);
+
+						// calculating time to move
+						int padTimeToReachY = (int)abs(((hittingY - pos.y) / moveSpeed));
+						println("padTime: " + padTimeToReachY);
+
+						// if time for pad to reach position, and shoot, move to position
+						if (ballTimeToReachX >= (padTimeToReachY + plateTimeToReachX)) {
+							println("changing state");
+							aiAimY = hittingY;
+							aiTimeToShoot = ballTimeToReachX - plateTimeToReachX - 1;
+							aiState = 4;
+							return;
+						}
+
+					}
+
+
+				}
+
+			} else {
+				// ball going, just stay in height
+				aiAimY = (int)globals.ball.pos.y;
+				aiMoveToAim();
+			}
+
+		} else if (aiState == 4) {
+
+			// Waiting to shoot
 			aiMoveToAim();
 
-
+			if (aiTimeToShoot <= 0) {
+				padInput.keyEnterAction = true;
+				aiState = 1;
+				return;
+			} else {
+				aiTimeToShoot--;
+			}
 		}
 
 	}
@@ -247,15 +309,14 @@ class Pad extends GameObject {
 		int ballPredY = (int) (globals.ball.pos.y + (x - globals.ball.pos.x) * ballSpeedTg);
 
 		// fixing aiBallPredY in case of wall bounce
-		while(ballPredY < globals.ceilingY || ballPredY > globals.floorY) {
-			if (ballPredY < globals.ceilingY) {
+		int securityCounter = 0;
+		while((ballPredY < globals.ceilingY || ballPredY > globals.floorY) && securityCounter < 5) {
+			if (ballPredY < globals.ceilingY - yPredictionSecurityWindow) {
 				ballPredY = abs(ballPredY) + 2 * globals.ceilingY + globals.ball.colliderH;
-			} else if (ballPredY > globals.floorY) {
+			} else if (ballPredY > globals.floorY + yPredictionSecurityWindow) {
 				ballPredY = 2 * globals.floorY + globals.ball.colliderH - ballPredY;
-			} else {
-				// default case for not loop bug
-				ballPredY = height/2;
 			}
+			securityCounter++;
 		}
 
 		return ballPredY;
