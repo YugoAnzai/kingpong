@@ -64,7 +64,6 @@ class GameScene extends Scene{
 			}
 		} else if (ball.pos.x > width + scoreXOffset) {
 			player1Score++;
-			soundManager.playSound("goal1");
 			if (player1Score == winScore) {
 				globals.wonLastGame = 1;
 				sceneManager.changeScene("EndGameScene");
