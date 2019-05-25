@@ -213,17 +213,7 @@ class Pad extends GameObject {
 			if (globals.ball.speed.x > 0) {
 
 				// ball coming, predictY
-				float ballSpeedTg = globals.ball.speed.y / globals.ball.speed.x;
-				aiBallPredY = (int) (globals.ball.pos.y + (pos.x - globals.ball.pos.x) * ballSpeedTg);
-
-				// fixing aiBallPredY in case of wall bounce
-				while(aiBallPredY < globals.ceilingY || aiBallPredY > globals.floorY) {
-					if (aiBallPredY < globals.ceilingY) {
-						aiBallPredY = abs(aiBallPredY) + 2 * globals.ceilingY + globals.ball.colliderH;
-					} else if (aiBallPredY > globals.floorY) {
-						aiBallPredY = 2 * globals.floorY + globals.ball.colliderH - aiBallPredY;
-					}
-				}
+				aiBallPredY = aiBallYPredict(pos.x);
 
 				// Angle for crystal
 				aiCrystalAngle = degrees(atan((aiBallPredY - aiCrystalTarget.pos.y) / (pos.x - aiCrystalTarget.pos.x)));
@@ -250,7 +240,31 @@ class Pad extends GameObject {
 
 	}
 
+	int aiBallYPredict(float x) {
+		// Given x value, simulate y position of ball in that x value, even with bounces
+
+		float ballSpeedTg = globals.ball.speed.y / globals.ball.speed.x;
+		int ballPredY = (int) (globals.ball.pos.y + (x - globals.ball.pos.x) * ballSpeedTg);
+
+		// fixing aiBallPredY in case of wall bounce
+		while(ballPredY < globals.ceilingY || ballPredY > globals.floorY) {
+			if (ballPredY < globals.ceilingY) {
+				ballPredY = abs(ballPredY) + 2 * globals.ceilingY + globals.ball.colliderH;
+			} else if (ballPredY > globals.floorY) {
+				ballPredY = 2 * globals.floorY + globals.ball.colliderH - ballPredY;
+			} else {
+				// default case for not loop bug
+				ballPredY = height/2;
+			}
+		}
+
+		return ballPredY;
+
+	}
+
 	void aiMoveToAim() {
+		// if aiAimY is defined, inputs to move pad to that position
+
 		if (aiAimY > pos.y + aiMovePrecision) {
 			padInput.pressedDown = true;
 		} else if (aiAimY < pos.y - aiMovePrecision) {
@@ -259,6 +273,8 @@ class Pad extends GameObject {
 	}
 
 	void updatePadInput() {
+		// updateInput according to keyboard input
+
 		if (player == 1) {
 			padInput.pressedUp = input.pressed.p1up;
 			padInput.pressedDown = input.pressed.p1down;
@@ -289,6 +305,7 @@ class Pad extends GameObject {
 		super.debugDraw();
 		plate.debugDraw();
 
+		// draw things for debugging AP. Press 'P' to see debug info in game
 		fill(0, 255, 0);
 		circle((int)pos.x, aiBallPredY, 5);
 

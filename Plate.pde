@@ -9,12 +9,12 @@ class Plate extends GameObject {
 	float hitSpeedMultiplier = 1.1;
 
 	boolean isAlive = false;
-	int lifeTotalTimer = 60;
+	int lifeTotalTimer = 50;
 	int lifeTimer = 0;
 
 	int player = 1;
 
-	int moveSpeed = 8;
+	int moveSpeed = 10;
 
 	Plate(int x, int y, int _player) {
 		super(x, y, "Plate");
@@ -66,10 +66,10 @@ class Plate extends GameObject {
 		float speedMagnitude = sqrt(sq(ball.speed.x ) + sq(ball.speed.y));
 		speedMagnitude *= hitSpeedMultiplier;
 		float angle = hitMaxAngle * ((ball.pos.y - pos.y)/(colliderH/2));
-		if (ball.speed.x > 0) {
-			ball.speed.x = - cos(radians(angle)) * speedMagnitude;
-		} else {
+		if (player == 1) {
 			ball.speed.x = cos(radians(angle)) * speedMagnitude;
+		} else if (player == 2) {
+			ball.speed.x = - cos(radians(angle)) * speedMagnitude;
 		}
 		ball.speed.y = sin(radians(angle)) * speedMagnitude;
 
