@@ -16,6 +16,7 @@ class Globals {
   Pad pad1;
   Pad pad2;
   CrystalsManager crystalsManager;
+  Ball ball;
 
   int wonLastGame = 1;
 

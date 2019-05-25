@@ -15,6 +15,8 @@ class Ball extends GameObject {
 		anim.createAnimation("idle", new int[]{0}, new int[]{99});
 		anim.setAnimation("idle");
 
+		globals.ball = this;
+
 	}
 
   void setSpeed(float magnitude) {
