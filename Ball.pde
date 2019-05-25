@@ -39,10 +39,10 @@ class Ball extends GameObject {
 
     // Walls
 		float absSpeed = abs(speed.y);
-    if ((pos.y - colliderH/2) < globals.ceilingY) {
+    if ((pos.y - colliderH/2) <= globals.ceilingY) {
 			soundManager.playSound("bounce3");
 			speed.y = absSpeed;
-		} else if((pos.y + colliderH/2) > globals.floorY) {
+		} else if((pos.y + colliderH/2) >= globals.floorY) {
 			soundManager.playSound("bounce3");
       speed.y = - absSpeed;
     }

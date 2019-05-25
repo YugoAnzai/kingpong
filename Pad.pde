@@ -45,6 +45,15 @@ class Pad extends GameObject {
 
 	Plate plate;
 
+	// IA variables
+	// 1: findingCrystal 2: targettingCrystal; 3: using_plate
+	int aiState = 1;
+	Crystal aiCrystalTarget;
+	int aiMovePrecision = 2;
+	int aiBallPredY = 0;
+	float aiCrystalAngle = 0;
+	int aiAimY = 0;
+
 	Pad(int x, int y, int _player) {
 		super(x, y, "Pad" + _player);
 		player = _player;
@@ -150,7 +159,11 @@ class Pad extends GameObject {
 
 	void control() {
 
-		updatePadInput();
+		if (player == 2 && globals.isSoloGame) {
+			aiUpdatePadInput();
+		} else {
+			updatePadInput();
+		}
 
 		if (padInput.pressedUp) {
       pos.y -= moveSpeed;
@@ -165,13 +178,84 @@ class Pad extends GameObject {
 
 	}
 
-	void launchPlate() {
+	void aiUpdatePadInput() {
+		// Sobrescrever controles com lógica de IA
+		padInput.pressedUp = false;
+		padInput.pressedDown = false;
+		padInput.keyEnterAction = false;
 
-		soundManager.playSound("plate");
+		if (aiState == 1) {
 
-		plate.start((int)pos.x, (int)pos.y);
-		crystals = 0;
-		crystalIconTint = false;
+			// Try to find and define a crystal to target
+
+			// find crystal
+			if (globals.crystalsManager.crystals.size() > 0) {
+				aiCrystalTarget = globals.crystalsManager.crystals.get((int)random(globals.crystalsManager.crystals.size()));
+				aiState = 2;
+				return;
+			}
+
+		} else if (aiState == 2) {
+
+			// Calculate positions to try and hit ball to collect chosen crystal
+
+			// Has enough crystals to use special, change state
+			if (crystals == crystalsToPlate) {
+
+			}
+
+			// Lost crystal
+			if (aiCrystalTarget == null || !globals.crystalsManager.crystals.contains(aiCrystalTarget)) {
+				aiState = 1;
+				return;
+			}
+
+			if (globals.ball.speed.x > 0) {
+
+				// ball coming, predictY
+				float ballSpeedTg = globals.ball.speed.y / globals.ball.speed.x;
+				aiBallPredY = (int) (globals.ball.pos.y + (pos.x - globals.ball.pos.x) * ballSpeedTg);
+
+				// fixing aiBallPredY in case of wall bounce
+				while(aiBallPredY < globals.ceilingY || aiBallPredY > globals.floorY) {
+					if (aiBallPredY < globals.ceilingY) {
+						aiBallPredY = abs(aiBallPredY) + 2 * globals.ceilingY + globals.ball.colliderH;
+					} else if (aiBallPredY > globals.floorY) {
+						aiBallPredY = 2 * globals.floorY + globals.ball.colliderH - aiBallPredY;
+					}
+				}
+
+				// Angle for crystal
+				aiCrystalAngle = degrees(atan((aiBallPredY - aiCrystalTarget.pos.y) / (pos.x - aiCrystalTarget.pos.x)));
+				aiAimY = aiBallPredY + (int)((colliderH/2) * (aiCrystalAngle/hitMaxAngle));
+
+				aiMoveToAim();
+
+			} else {
+				// ball going, just stay in height
+				aiAimY = (int)globals.ball.pos.y;
+				aiMoveToAim();
+			}
+
+		} else if (aiState == 3) {
+
+			// Find best position and timing to shoot
+
+			// ball going, just stay in height
+			aiAimY = (int)globals.ball.pos.y;
+			aiMoveToAim();
+
+
+		}
+
+	}
+
+	void aiMoveToAim() {
+		if (aiAimY > pos.y + aiMovePrecision) {
+			padInput.pressedDown = true;
+		} else if (aiAimY < pos.y - aiMovePrecision) {
+			padInput.pressedUp = true;
+		}
 	}
 
 	void updatePadInput() {
@@ -192,9 +276,43 @@ class Pad extends GameObject {
 		}
 	}
 
+	void launchPlate() {
+
+		soundManager.playSound("plate");
+
+		plate.start((int)pos.x, (int)pos.y);
+		crystals = 0;
+		crystalIconTint = false;
+	}
+
 	void debugDraw() {
 		super.debugDraw();
 		plate.debugDraw();
+
+		fill(0, 255, 0);
+		circle((int)pos.x, aiBallPredY, 5);
+
+		fill(0, 0, 255);
+		circle((int)pos.x, aiAimY, 5);
+
+		int crystalX = 0;
+		int crystalY = 0;
+		if (aiCrystalTarget != null) {
+			crystalX = (int)aiCrystalTarget.pos.x;
+			crystalY = (int)aiCrystalTarget.pos.y;
+			fill(0, 255, 0);
+			circle(crystalX, crystalY, 5);
+		}
+
+		String[] lines = {
+      "aiState: " + aiState,
+			"crystalX: " + crystalX,
+			"crystalY: " + crystalX,
+			"aiBallPredY: " + aiBallPredY,
+			"aiCrystalAngle: " + aiCrystalAngle,
+    };
+    debug.draw(lines, 500, 10);
+
 	}
 
 	void destroy() {
