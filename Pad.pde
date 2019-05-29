@@ -381,10 +381,10 @@ class Pad extends GameObject {
 
 		// draw things for debugging AP. Press 'P' to see debug info in game
 		fill(0, 255, 0);
-		circle((int)pos.x, aiBallPredY, 5);
+		ellipse((int)pos.x, aiBallPredY, 5, 5);
 
 		fill(0, 0, 255);
-		circle((int)pos.x, aiAimY, 5);
+		ellipse((int)pos.x, aiAimY, 5, 5);
 
 		int crystalX = 0;
 		int crystalY = 0;
@@ -392,7 +392,7 @@ class Pad extends GameObject {
 			crystalX = (int)aiCrystalTarget.pos.x;
 			crystalY = (int)aiCrystalTarget.pos.y;
 			fill(0, 255, 0);
-			circle(crystalX, crystalY, 5);
+			ellipse(crystalX, crystalY, 5, 5);
 		}
 
 		String[] lines = {
