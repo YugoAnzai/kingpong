@@ -42,15 +42,15 @@ class Plate extends GameObject {
 
 		pos.x += moveSpeed;
 
-		if (collided.length > 0) {
-			hitBall((Ball)collided[0].gameObject);
-			die();
-		}
-
 		if (lifeTimer < 0) {
 			die();
 		} else {
-			lifeTimer --;
+			lifeTimer--;
+		}
+
+		if (collided.length > 0) {
+			hitBall((Ball)collided[0].gameObject);
+			die();
 		}
 
 	}

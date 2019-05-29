@@ -32,7 +32,7 @@ class Pad extends GameObject {
 
 	int moveSpeed = 6;
 
-	int crystals = 0;
+	int crystals = 5;
 	int crystalsToPlate = 5;
 	int crystalsRectW = 4;
 	int crystalsRectH = 80;
@@ -52,6 +52,7 @@ class Pad extends GameObject {
 	// 2: targettingCrystal
 	// 3: positioningForPlate
 	// 4: moveAndWaitingToShoot
+	// 5: defend with crystals
 
 	Crystal aiCrystalTarget;
 	int aiMovePrecision = 2;
@@ -59,7 +60,7 @@ class Pad extends GameObject {
 	int yPredictionSecurityWindow = 4;
 	float aiCrystalAngle = 0;
 	int aiAimY = 0;
-	int[] aiShootXPreds = {300, 450, 500};
+	int aiShootXPred = 450;
 	int aiShootYPosWindow = 3;
 	int aiTimeToShoot = 0;
 
@@ -244,39 +245,40 @@ class Pad extends GameObject {
 			if (globals.ball.speed.x > 0) {
 				// ball coming
 
-				// for each x value
-				for(int i = 0; i < aiShootXPreds.length; i ++) {
-					// if ball is already in front
-					if (globals.ball.pos.x > aiShootXPreds[i]) continue;
+				// if ball is already in front
+				if (globals.ball.pos.x > aiShootXPred) {
+					aiState = 5;
+					return;
+				};
 
-					// Calculate time for ball to reach
-					int ballTimeToReachX = (int)((aiShootXPreds[i] - globals.ball.pos.x) / globals.ball.speed.x);
+				// Calculate time for ball to reach
+				int ballTimeToReachX = (int)((aiShootXPred - globals.ball.pos.x) / globals.ball.speed.x);
 
-					// Calculate when need to shoot
-					int plateTimeToReachX = (int)abs(((pos.x - aiShootXPreds[i]) / plate.moveSpeed));
+				// Calculate when need to shoot
+				int plateTimeToReachX = (int)abs(((pos.x - aiShootXPred) / plate.moveSpeed));
 
-					// if still has time to shoot
-					if (plateTimeToReachX < ballTimeToReachX) {
-						println("ballTime > plateTime");
-						println("ballTime: " + ballTimeToReachX + " platetime: " + plateTimeToReachX);
+				// if still has time to shoot
+				if (plateTimeToReachX < ballTimeToReachX) {
+					println("ballTime: " + ballTimeToReachX + " platetime: " + plateTimeToReachX);
 
-						int hittingY = aiBallYPredict(aiShootXPreds[i]);
+					int hittingY = aiBallYPredict(aiShootXPred);
 
-						// calculating time to move
-						int padTimeToReachY = (int)abs(((hittingY - pos.y) / moveSpeed));
-						println("padTime: " + padTimeToReachY);
+					// calculating time to move
+					int padTimeToReachY = (int)abs(((hittingY - pos.y) / moveSpeed));
+					println("padTime: " + padTimeToReachY);
 
-						// if time for pad to reach position, and shoot, move to position
-						if (ballTimeToReachX >= (padTimeToReachY + plateTimeToReachX)) {
-							println("changing state");
-							aiAimY = hittingY;
-							aiTimeToShoot = ballTimeToReachX - plateTimeToReachX - 1;
-							aiState = 4;
-							return;
-						}
-
+					// if time for pad to reach position, and shoot, move to position
+					if (ballTimeToReachX >= (padTimeToReachY + plateTimeToReachX)) {
+						println("To wait to shoot state");
+						aiAimY = hittingY;
+						aiTimeToShoot = ballTimeToReachX - plateTimeToReachX - 1;
+						aiState = 4;
+						return;
+					} else {
+						println("To wait defend with crystals");
+						aiState = 5;
+						return;
 					}
-
 
 				}
 
@@ -298,6 +300,17 @@ class Pad extends GameObject {
 			} else {
 				aiTimeToShoot--;
 			}
+
+		} else if (aiState == 5) {
+
+			aiAimY = (int)globals.ball.pos.y;
+			aiMoveToAim();
+
+			if (globals.ball.speed.x < 0) {
+				aiState = 3;
+				return;
+			}
+
 		}
 
 	}
